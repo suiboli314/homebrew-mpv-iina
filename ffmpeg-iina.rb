@@ -73,6 +73,7 @@ EOS
       --disable-libjack
       --disable-indev=jack
       --disable-programs
+      --enable-debug
     ]
 
     args << "--enable-neon --cc=gcc" if Hardware::CPU.arm?

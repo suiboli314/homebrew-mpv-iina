@@ -4,15 +4,17 @@
 class MpvIina < Formula
   desc "Media player based on MPlayer and mplayer2"
   homepage "https://mpv.io"
-  url "https://github.com/mpv-player/mpv/archive/v0.35.1.tar.gz"
-  sha256 "41df981b7b84e33a2ef4478aaf81d6f4f5c8b9cd2c0d337ac142fc20b387d1a9"
-  head "https://github.com/mpv-player/mpv.git"
+  url "https://github.com/mpv-player/mpv/archive/refs/tags/v0.38.0.tar.gz"
+  sha256 "86d9ef40b6058732f67b46d0bbda24a074fae860b3eaae05bab3145041303066"
+  license :cannot_represent
+  head "https://github.com/mpv-player/mpv.git", branch: "master"
 
   keg_only "it is intended to only be used for building IINA. This formula is not recommended for daily use"
 
   depends_on "docutils" => :build
   depends_on "meson" => :build
   depends_on "pkg-config" => [:build, :test]
+  # depends_on "cmake" => [:build, :test]
   depends_on xcode: :build
 
   depends_on "ffmpeg-iina"
@@ -22,11 +24,18 @@ class MpvIina < Formula
   depends_on "little-cms2"
   depends_on "luajit"
   depends_on "libbluray"
+  depends_on "libplacebo"
+  depends_on "libsamplerate"
 
   depends_on "mujs"
+  depends_on "rubberband"
   depends_on "uchardet"
-  # depends_on "vapoursynth"
+  depends_on "vapoursynth"
+  depends_on "vulkan-loader"
   depends_on "yt-dlp"
+  depends_on "zimg"
+
+  uses_from_macos "zlib"
 
   # stable do
     # Fix ytdl issue. Remove after next mpv release.
@@ -57,6 +66,7 @@ class MpvIina < Formula
 
     # libarchive is keg-only
     ENV.prepend_path "PKG_CONFIG_PATH", Formula["libarchive"].opt_lib/"pkgconfig"
+    # ENV.append_path "PKG_CONFIG_PATH", Formula["libplacebo"].opt_lib/"pkgconfig"
 
     args = %W[
       -Dhtml-build=disabled
@@ -68,6 +78,9 @@ class MpvIina < Formula
 
       -Dlibbluray=enabled
       -Dcplayer=false
+      
+      -Db_asneeded=false
+      -Dc_link_args=-fuse-ld=/usr/bin/ld
 
       -Dswift-build=disabled
       -Dmacos-cocoa-cb=disabled

@@ -48,12 +48,12 @@ class MpvIina < Formula
     # end
   # end
 
-  head do 
-    patch do
-      url "https://gist.githubusercontent.com/lhc70000/2e4028a67a38d81d28157789c20109e6/raw/a0bab7f44658aae1991cab0ad5b13fac8fa23861/revert-meson.patch"
-      sha256 "1bac76a8a5b8e315d9e03d961cabc0962e1c51ebd9199a37c669ce92b3823181"
-    end
-  end
+  # head do 
+  #   patch do
+  #     url "https://gist.githubusercontent.com/lhc70000/2e4028a67a38d81d28157789c20109e6/raw/a0bab7f44658aae1991cab0ad5b13fac8fa23861/revert-meson.patch"
+  #     sha256 "1bac76a8a5b8e315d9e03d961cabc0962e1c51ebd9199a37c669ce92b3823181"
+  #   end
+  # end
 
   def install
     # LANG is unset by default on macOS and causes issues when calling getlocale
@@ -91,6 +91,9 @@ class MpvIina < Formula
       --sysconfdir=#{pkgetc}
       --datadir=#{pkgshare}
     ]
+    
+    ohai "Meson args: #{args.join(' ')}" 
+    ohai "Std Meson args: #{std_meson_args.join(' ')}"
 
     system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
